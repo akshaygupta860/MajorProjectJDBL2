@@ -5,6 +5,7 @@ package com.shashi.userservice.Controller;
 import com.shashi.userservice.Model.User;
 import com.shashi.userservice.Repository.UserRepository;
 import com.shashi.userservice.exception.UserNotFoundException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,13 @@ public class UserResource {
     @Autowired
     private UserRepository repository;
     // Find
+    @ApiOperation(value = "Find all the User")
     @GetMapping("/users")
     List<User> findAll() {
         return repository.findAll();
     }
 
+    @ApiOperation(value = "Register New User")
     @PostMapping("/users")
     //return 201 instead of 200
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,6 +34,7 @@ public class UserResource {
     }
 
     // Find a given user
+    @ApiOperation(value = "Find User by Id ")
     @GetMapping("/users/{id}")
     User findOne(@PathVariable int id) {
         LOGGER.info("/users/{id} called with id "+ id);

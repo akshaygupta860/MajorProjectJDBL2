@@ -7,6 +7,8 @@ import com.shashi.walletservice.Repository.WalletRepository;
 import com.shashi.walletservice.Util.WalletValidator;
 import com.shashi.walletservice.exception.WalletBadRequest;
 import com.shashi.walletservice.exception.WalletNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -34,6 +36,7 @@ public class WalletResource {
     private static final Logger logger = LoggerFactory.getLogger(WalletResource.class);
     RedissonClient redisson = Redisson.create();
 
+    @ApiOperation(value = "Find all the wallet")
     @GetMapping("/findAllWallet")
     List<Wallet> findAllWallet() {
         return walletRepository.findAll();
@@ -41,7 +44,8 @@ public class WalletResource {
 
     // Find a given wallet
     @GetMapping("/wallet/{id}")
-    Wallet findOneWallet(@PathVariable int id) {
+    @ApiOperation(value = "Find wallet by Id ")
+    Wallet findOneWallet(@ApiParam(value = "Store id of of the point of service to deliver to/collect from", required = true)@PathVariable int id) {
         logger.info("/wallet/{id} called with id "+ id);
         // Optional<User> user = repository.findById(id);
         return walletRepository.findById(id)
@@ -52,6 +56,7 @@ public class WalletResource {
     @PostMapping("/createNewWallet")
     //return 201 instead of 200
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create New Wallet ")
     Wallet CreateNewWallet(@RequestBody Wallet newWallet) {
         if(!walletValidator.validateWalletRequest(newWallet)){
             logger.info("CreateNewWallet request not valid");
@@ -69,6 +74,7 @@ public class WalletResource {
     }
     // Save
     @PutMapping("/updateWallet")
+    @ApiOperation(value = "Update Wallet ")
     Wallet updateWallet(@RequestBody Wallet newWallet) {
         Wallet wallet = walletRepository.save(newWallet);
         /*
