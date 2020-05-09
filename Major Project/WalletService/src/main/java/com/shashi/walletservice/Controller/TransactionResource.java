@@ -76,7 +76,7 @@ public class TransactionResource {
 
         transaction.setStatus("SUCCESS");
         logger.info(String.format("$$ -> Producing Transaction --> %s", transaction));
-        kafkaTemplate.send(TOPIC, Integer.toString(transaction.getId())+"txn");
+        kafkaTemplate.send(TOPIC, Integer.toString(transaction.getId()));
         walletRepository.save(receiverWallet);
         walletRepository.save(senderWallet);
         // Updating balance in Redis Cache

@@ -1,5 +1,6 @@
 package com.shashi.walletservice.Repository;
 
+import antlr.StringUtils;
 import com.shashi.walletservice.Model.Wallet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shashi.walletservice.Model.WalletInRedis;
@@ -22,7 +23,8 @@ public class WalletDaoRedis {
     public Boolean updateWallet(WalletInRedis wallet) {
         try {
             Map userHash = new ObjectMapper().convertValue(wallet, Map.class);
-            redisTemplate.opsForHash().put(KEY, wallet.getUid(), userHash);
+            redisTemplate.opsForHash().put(KEY, Integer.toString(wallet.getUid()), userHash);
+            logger.info("Wallet update in Redis");
             return true;
 
         } catch (Exception e) {
